@@ -126,8 +126,8 @@ func GetWeatherByCity(city string, country string, units string) (WeatherData, e
 	return currentWeather, nil
 }
 
-// GetWeatherByZip Collects weather data using a zipcode
-func GetWeatherByZip(zipCode string, country string, units string) (WeatherData, error) {
+// GetWeatherByZipCode Collects weather data using a zipcode
+func GetWeatherByZipCode(zipCode string, country string, units string) (WeatherData, error) {
 
 	// Constructing the api url using postal code
 	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?zip=%s,%s&units=%s&APPID=%s", zipCode, country, units, apiKey)
