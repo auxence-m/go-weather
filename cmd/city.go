@@ -15,7 +15,7 @@ var cityCmd = &cobra.Command{
 	Use:   "city",
 	Short: "display the current weather data for a city",
 	Long: `The city command will display the current weather data for a specific city,
-If a city name exist in multiple counties, the command will only get the weather data for the country the open weather api sets as default`,
+If a city name exist in multiple countries, the command will only get the weather data for the country the open weather api sets as default`,
 	Example: `go-weather city london 
 go-weather city london --country ca -units I --detailed
 go-weather city montreal -c ca -u S -d`,

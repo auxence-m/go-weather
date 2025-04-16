@@ -9,8 +9,8 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "go-weather",
-	Short: "A brief description of your application",
-	Long:  `A longer description that spans multiple lines and likely contains`,
+	Short: "go-weather is a weather cli app",
+	Long:  `The app will print in the console the current weather data for a specific city of for a specific zip code`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
