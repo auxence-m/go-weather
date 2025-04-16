@@ -25,7 +25,7 @@ go-weather city montreal -c ca -u S -d`,
 func cityRun(cmd *cobra.Command, args []string) {
 
 	// Make sur a city name is provided
-	if len(args) != 1 {
+	if len(args) == 0 {
 		fmt.Println("You need to provide a city name")
 		os.Exit(1)
 	}
