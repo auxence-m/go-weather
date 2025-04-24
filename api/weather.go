@@ -123,6 +123,8 @@ type WeatherForecast struct {
 		Deg    int     `json:"deg"`
 		Gust   float64 `json:"gust"`
 		Clouds int     `json:"clouds"`
+		Rain   float64 `json:"rain"`
+		Snow   float64 `json:"snow"`
 		Pop    float64 `json:"pop"`
 	} `json:"list"`
 }
@@ -290,7 +292,50 @@ func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string
 	}
 
 	fmt.Fprintln(w, "Date & Time of data collection:\t", time.Unix(int64(weatherData.Dt), 0).Format("Mon 02-01-2006 15:04:05"))
+	err := w.Flush()
+	if err != nil {
+		return
+	}
+}
 
+// PrintWeatherForecast Prints the current weather data onto the console
+func PrintWeatherForecast(weatherForecast WeatherForecast, count int, detailed bool, units string) {
+
+	// Create a tabwriter instance.
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
+
+	fmt.Println("Here is the weather forecast.")
+	fmt.Println("City:\t", weatherForecast.City.Name, weatherForecast.City.Country)
+
+	for _, day := range weatherForecast.List {
+		date := time.Unix(int64(day.Dt), 0).Format("Monday 02 January 2006")
+		fmt.Fprintln(w, "----------", date, "----------")
+		fmt.Fprintln(w, "Min Temperature:\t", day.Temp.Min, printTemp(units))
+		fmt.Fprintln(w, "Max Temperature:\t", day.Temp.Max, printTemp(units))
+		fmt.Fprintln(w, "Average Temperature:\t", day.Temp.Day, printTemp(units))
+		fmt.Fprintln(w, "Average Temperature Feels like:\t", day.FeelsLike.Day, printTemp(units))
+		fmt.Fprintln(w, "Morning Temperature:\t", day.Temp.Morn, printTemp(units))
+		fmt.Fprintln(w, "Morning Temperature Feels like:\t", day.FeelsLike.Morn, printTemp(units))
+		fmt.Fprintln(w, "Evening Temperature:\t", day.Temp.Eve, printTemp(units))
+		fmt.Fprintln(w, "Evening Temperature Feels like:\t", day.FeelsLike.Eve, printTemp(units))
+		fmt.Fprintln(w, "Condition:\t", day.Weather[0].Description)
+
+		if detailed {
+			fmt.Fprintln(w, "Humidity:\t", day.Humidity, "%")
+			fmt.Fprintln(w, "Pressure :\t", day.Pressure, "hPa")
+			fmt.Fprintln(w, "Cloudiness\t", day.Clouds, "%")
+			fmt.Fprintln(w, "Rain\t", day.Rain, "mm")
+			fmt.Fprintln(w, "Clouds\t", day.Clouds, "mm")
+			fmt.Fprintln(w, "Wind speed\t", day.Speed, printSpeed(units))
+			fmt.Fprintln(w, "Wind direction\t", day.Deg, "%")
+			fmt.Fprintln(w, "Wind gust\t", day.Gust, printSpeed(units))
+			fmt.Fprintln(w, "Sunrise\t", time.Unix(int64(day.Sunrise), 0).Format(time.TimeOnly))
+			fmt.Fprintln(w, "Sunset\t", time.Unix(int64(day.Sunset), 0).Format(time.TimeOnly))
+			fmt.Fprintln(w, "Longitude\t", weatherForecast.City.Coord.Lon)
+			fmt.Fprintln(w, "Latitude\t", weatherForecast.City.Coord.Lon)
+
+		}
+	}
 	err := w.Flush()
 	if err != nil {
 		return

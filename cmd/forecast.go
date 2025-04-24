@@ -62,7 +62,7 @@ func forecastCityRun(cmd *cobra.Command, args []string) {
 	}
 
 	// Display current weather
-	fmt.Println(weatherForecast)
+	api.PrintWeatherForecast(weatherForecast, count, detailed, units)
 }
 
 func forecastZipRun(cmd *cobra.Command, args []string) {
@@ -83,7 +83,7 @@ func forecastZipRun(cmd *cobra.Command, args []string) {
 	}
 
 	// Display current weather
-	fmt.Println(weatherForecast)
+	api.PrintWeatherForecast(weatherForecast, count, detailed, units)
 }
 
 func init() {
