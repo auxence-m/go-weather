@@ -78,6 +78,55 @@ type CurrentWeather struct {
 	Message  string `json:"message"`
 }
 
+type WeatherForecast struct {
+	City struct {
+		Id    int    `json:"id"`
+		Name  string `json:"name"`
+		Coord struct {
+			Lon float64 `json:"lon"`
+			Lat float64 `json:"lat"`
+		} `json:"coord"`
+		Country    string `json:"country"`
+		Population int    `json:"population"`
+		Timezone   int    `json:"timezone"`
+	} `json:"city"`
+	Cod     string  `json:"cod"`
+	Message float64 `json:"message"`
+	Cnt     int     `json:"cnt"`
+	List    []struct {
+		Dt      int `json:"dt"`
+		Sunrise int `json:"sunrise"`
+		Sunset  int `json:"sunset"`
+		Temp    struct {
+			Day   float64 `json:"day"`
+			Min   float64 `json:"min"`
+			Max   float64 `json:"max"`
+			Night float64 `json:"night"`
+			Eve   float64 `json:"eve"`
+			Morn  float64 `json:"morn"`
+		} `json:"temp"`
+		FeelsLike struct {
+			Day   float64 `json:"day"`
+			Night float64 `json:"night"`
+			Eve   float64 `json:"eve"`
+			Morn  float64 `json:"morn"`
+		} `json:"feels_like"`
+		Pressure int `json:"pressure"`
+		Humidity int `json:"humidity"`
+		Weather  []struct {
+			Id          int    `json:"id"`
+			Main        string `json:"main"`
+			Description string `json:"description"`
+			Icon        string `json:"icon"`
+		} `json:"weather"`
+		Speed  float64 `json:"speed"`
+		Deg    int     `json:"deg"`
+		Gust   float64 `json:"gust"`
+		Clouds int     `json:"clouds"`
+		Pop    float64 `json:"pop"`
+	} `json:"list"`
+}
+
 // Reads config file and sets the api key
 func initConfig() {
 	viper.SetConfigName("config")
@@ -92,8 +141,8 @@ func initConfig() {
 	apiKey = viper.GetString("OPEN_WEATHER_MAP_API_KEY")
 }
 
-// GetWeatherByCity Collects weather data using a city name
-func GetWeatherByCity(city string, country string, units string) (CurrentWeather, error) {
+// CurrentWeatherByCity Collects current weather data using a city name
+func CurrentWeatherByCity(city string, country string, units string) (CurrentWeather, error) {
 
 	// Constructing the api url using city name
 	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s", city, country, units, apiKey)
@@ -126,8 +175,8 @@ func GetWeatherByCity(city string, country string, units string) (CurrentWeather
 	return currentWeather, nil
 }
 
-// GetWeatherByZipCode Collects weather data using a zipcode
-func GetWeatherByZipCode(zipCode string, country string, units string) (CurrentWeather, error) {
+// CurrentWeatherByZipCode Collects current weather data using a zipcode
+func CurrentWeatherByZipCode(zipCode string, country string, units string) (CurrentWeather, error) {
 
 	// Constructing the api url using postal code
 	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?zip=%s,%s&units=%s&APPID=%s", zipCode, country, units, apiKey)
@@ -155,7 +204,66 @@ func GetWeatherByZipCode(zipCode string, country string, units string) (CurrentW
 	return currentWeather, nil
 }
 
-func PrintWeatherData(weatherData CurrentWeather, detailed bool, units string) {
+// ForecastByCity Collects weather forecast data using a city name
+func ForecastByCity(city string, country string, count int, units string) (WeatherForecast, error) {
+
+	// Constructing the api url using a city name
+	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast/daily?q=%s,%s&cnt=%d&units=%s&APPID=%s", city, country, count, units, apiKey)
+
+	// Http get request to open weather api
+	response, err := http.Get(apiUrl)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+	defer response.Body.Close()
+
+	// Reading the response body
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+
+	// Parsing JSON response to a currentWeather object
+	var weatherForecast WeatherForecast
+	err = json.Unmarshal(body, &weatherForecast)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+
+	return weatherForecast, nil
+}
+
+// ForecastByZipCode Collects weather forecast data using a zip code
+func ForecastByZipCode(zipCode string, country string, count int, units string) (WeatherForecast, error) {
+
+	// Constructing the api url using postal code
+	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast/daily?zip=%s,%s&cnt=%d&units=%s&APPID=%s", zipCode, country, count, units, apiKey)
+
+	// Http get request to open weather api
+	response, err := http.Get(apiUrl)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+	defer response.Body.Close()
+
+	// Reading the response body
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+
+	// Parsing JSON response to a currentWeather object
+	var weatherForecast WeatherForecast
+	err = json.Unmarshal(body, &weatherForecast)
+	if err != nil {
+		return WeatherForecast{}, err
+	}
+
+	return weatherForecast, nil
+}
+
+// PrintCurrentWeather Prints the current weather data onto the console
+func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string) {
 
 	// Create a tabwriter instance.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
@@ -189,7 +297,7 @@ func PrintWeatherData(weatherData CurrentWeather, detailed bool, units string) {
 	}
 }
 
-// GetUnits Convert units flag value into the correct metric value
+// GetUnits Convert units flag value into the correct metric value for the api get request link
 func GetUnits(flag string) string {
 	switch flag {
 	case "S":
@@ -201,7 +309,7 @@ func GetUnits(flag string) string {
 	}
 }
 
-// Print temperature symbols based on unit system
+// printSpeed Print temperature symbols based on unit system
 func printSpeed(units string) string {
 	switch units {
 	case "S":
@@ -213,7 +321,7 @@ func printSpeed(units string) string {
 	}
 }
 
-// Print speed symbols based on unit system
+// printTemp Print speed symbols based on unit system
 func printTemp(units string) string {
 	switch units {
 	case "S":
