@@ -15,7 +15,7 @@ import (
 
 var apiKey string
 
-type WeatherData struct {
+type CurrentWeather struct {
 	Coordinates struct {
 		Lon float64 `json:"lon"`
 		Lat float64 `json:"lat"`
@@ -93,7 +93,7 @@ func initConfig() {
 }
 
 // GetWeatherByCity Collects weather data using a city name
-func GetWeatherByCity(city string, country string, units string) (WeatherData, error) {
+func GetWeatherByCity(city string, country string, units string) (CurrentWeather, error) {
 
 	// Constructing the api url using city name
 	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s", city, country, units, apiKey)
@@ -101,33 +101,33 @@ func GetWeatherByCity(city string, country string, units string) (WeatherData, e
 	// Http get request to open weather api
 	response, err := http.Get(apiUrl)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 	defer response.Body.Close()
 
 	// Reading the response body
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 
 	// Parsing JSON response to a currentWeather object
-	var currentWeather WeatherData
+	var currentWeather CurrentWeather
 	err = json.Unmarshal(body, &currentWeather)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 
 	// Handle specific bad request errors
 	if currentWeather.Code != 200 {
-		return WeatherData{}, errors.New(currentWeather.Message)
+		return CurrentWeather{}, errors.New(currentWeather.Message)
 	}
 
 	return currentWeather, nil
 }
 
 // GetWeatherByZipCode Collects weather data using a zipcode
-func GetWeatherByZipCode(zipCode string, country string, units string) (WeatherData, error) {
+func GetWeatherByZipCode(zipCode string, country string, units string) (CurrentWeather, error) {
 
 	// Constructing the api url using postal code
 	apiUrl := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?zip=%s,%s&units=%s&APPID=%s", zipCode, country, units, apiKey)
@@ -135,53 +135,53 @@ func GetWeatherByZipCode(zipCode string, country string, units string) (WeatherD
 	// Http get request to open weather api
 	response, err := http.Get(apiUrl)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 	defer response.Body.Close()
 
 	// Reading the response body
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 
 	// Parsing JSON response to a currentWeather object
-	var currentWeather WeatherData
+	var currentWeather CurrentWeather
 	err = json.Unmarshal(body, &currentWeather)
 	if err != nil {
-		return WeatherData{}, err
+		return CurrentWeather{}, err
 	}
 
 	return currentWeather, nil
 }
 
-func PrintWeatherData(currentWeather WeatherData, detailed bool, units string) {
+func PrintWeatherData(weatherData CurrentWeather, detailed bool, units string) {
 
 	// Create a tabwriter instance.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 
 	fmt.Println("Here is the current Condition data.")
-	fmt.Fprintln(w, "City:\t", currentWeather.Name, currentWeather.Sys.Country)
-	fmt.Fprintln(w, "Temperature:\t", currentWeather.Main.Temp, printTemp(units))
-	fmt.Fprintln(w, "Feels like:\t", currentWeather.Main.FeelsLike, printTemp(units))
-	fmt.Fprintln(w, "Min Temperature:\t", currentWeather.Main.TempMin, printTemp(units))
-	fmt.Fprintln(w, "Max Temperature:\t", currentWeather.Main.TempMax, printTemp(units))
-	fmt.Fprintln(w, "Condition:\t", currentWeather.Weather[0].Description)
+	fmt.Fprintln(w, "City:\t", weatherData.Name, weatherData.Sys.Country)
+	fmt.Fprintln(w, "Temperature:\t", weatherData.Main.Temp, printTemp(units))
+	fmt.Fprintln(w, "Feels like:\t", weatherData.Main.FeelsLike, printTemp(units))
+	fmt.Fprintln(w, "Min Temperature:\t", weatherData.Main.TempMin, printTemp(units))
+	fmt.Fprintln(w, "Max Temperature:\t", weatherData.Main.TempMax, printTemp(units))
+	fmt.Fprintln(w, "Condition:\t", weatherData.Weather[0].Description)
 
 	if detailed {
-		fmt.Fprintln(w, "Humidity:\t", currentWeather.Main.Humidity, "%")
-		fmt.Fprintln(w, "Pressure :\t", currentWeather.Main.Pressure, "hPa")
-		fmt.Fprintln(w, "Cloudiness :\t", currentWeather.Clouds.All, "%")
-		fmt.Fprintln(w, "Wind speed :\t", currentWeather.Wind.Speed, printSpeed(units))
-		fmt.Fprintln(w, "Wind direction :\t", currentWeather.Wind.Deg, "%")
-		fmt.Fprintln(w, "Wind gust :\t", currentWeather.Wind.Gust, printSpeed(units))
-		fmt.Fprintln(w, "Sunrise:\t", time.Unix(int64(currentWeather.Sys.Sunrise), 0).Format(time.TimeOnly))
-		fmt.Fprintln(w, "Sunset:\t", time.Unix(int64(currentWeather.Sys.Sunset), 0).Format(time.TimeOnly))
-		fmt.Fprintln(w, "Longitude:\t", currentWeather.Coordinates.Lon)
-		fmt.Fprintln(w, "Latitude:\t", currentWeather.Coordinates.Lat)
+		fmt.Fprintln(w, "Humidity:\t", weatherData.Main.Humidity, "%")
+		fmt.Fprintln(w, "Pressure :\t", weatherData.Main.Pressure, "hPa")
+		fmt.Fprintln(w, "Cloudiness :\t", weatherData.Clouds.All, "%")
+		fmt.Fprintln(w, "Wind speed :\t", weatherData.Wind.Speed, printSpeed(units))
+		fmt.Fprintln(w, "Wind direction :\t", weatherData.Wind.Deg, "%")
+		fmt.Fprintln(w, "Wind gust :\t", weatherData.Wind.Gust, printSpeed(units))
+		fmt.Fprintln(w, "Sunrise:\t", time.Unix(int64(weatherData.Sys.Sunrise), 0).Format(time.TimeOnly))
+		fmt.Fprintln(w, "Sunset:\t", time.Unix(int64(weatherData.Sys.Sunset), 0).Format(time.TimeOnly))
+		fmt.Fprintln(w, "Longitude:\t", weatherData.Coordinates.Lon)
+		fmt.Fprintln(w, "Latitude:\t", weatherData.Coordinates.Lat)
 	}
 
-	fmt.Fprintln(w, "Time of data collection:\t", time.Unix(int64(currentWeather.Dt), 0).Format(time.DateTime))
+	fmt.Fprintln(w, "Date & Time of data collection:\t", time.Unix(int64(weatherData.Dt), 0).Format("Mon 02-01-2006 15:04:05"))
 
 	err := w.Flush()
 	if err != nil {
