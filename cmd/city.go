@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"go-weather/api"
 	"os"
+	"strings"
 )
 
 var country string
@@ -18,7 +19,8 @@ var cityCmd = &cobra.Command{
 If a city name exist in multiple countries, the command will only get the weather data for the country the open weather api sets as default`,
 	Example: `go-weather city london 
 go-weather city london --country ca -units I --detailed
-go-weather city montreal -c ca -u S -d`,
+go-weather city montreal -c ca -u S -d
+go-weather city new-york --units I`,
 	Run: cityRun,
 }
 
@@ -30,7 +32,8 @@ func cityRun(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	city := args[0]
+	// For cities that contains two substrings, replace the "-" character "+" character
+	city := strings.ReplaceAll(args[0], "-", "+")
 
 	// Get currentWeather data for the city
 	currentWeather, err := api.GetWeatherByCity(city, country, api.GetUnits(units))
