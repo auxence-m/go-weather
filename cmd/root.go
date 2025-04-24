@@ -9,7 +9,7 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "go-weather",
-	Short: "go-weather is a weather cli app",
+	Short: "go-weather is a weather CLI app",
 	Long:  `The app will print in the console the current weather data for a specific city of for a specific zip code`,
 }
 
