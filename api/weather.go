@@ -270,16 +270,15 @@ func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string
 	// Create a tabwriter instance.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 
-	fmt.Println("Here is the current Condition data.")
-	fmt.Fprintln(w, "City:\t", weatherData.Name, weatherData.Sys.Country)
+	fmt.Printf("Here is the current for %s, %s: \n", weatherData.Name, weatherData.Sys.Country)
 	fmt.Fprintln(w, "Temperature:\t", weatherData.Main.Temp, printTemp(units))
 	fmt.Fprintln(w, "Feels like:\t", weatherData.Main.FeelsLike, printTemp(units))
 	fmt.Fprintln(w, "Min Temperature:\t", weatherData.Main.TempMin, printTemp(units))
 	fmt.Fprintln(w, "Max Temperature:\t", weatherData.Main.TempMax, printTemp(units))
 	fmt.Fprintln(w, "Condition:\t", weatherData.Weather[0].Description)
+	fmt.Fprintln(w, "Humidity:\t", weatherData.Main.Humidity, "%")
 
 	if detailed {
-		fmt.Fprintln(w, "Humidity:\t", weatherData.Main.Humidity, "%")
 		fmt.Fprintln(w, "Pressure :\t", weatherData.Main.Pressure, "hPa")
 		fmt.Fprintln(w, "Cloudiness :\t", weatherData.Clouds.All, "%")
 		fmt.Fprintln(w, "Wind speed :\t", weatherData.Wind.Speed, printSpeed(units))
@@ -304,8 +303,7 @@ func PrintWeatherForecast(weatherForecast WeatherForecast, count int, detailed b
 	// Create a tabwriter instance.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 
-	fmt.Println("Here is the weather forecast.")
-	fmt.Println("City:\t", weatherForecast.City.Name, weatherForecast.City.Country)
+	fmt.Printf("Here is the weather forecast for %s, %s (%d day forecast): \n", weatherForecast.City.Name, weatherForecast.City.Country, count)
 
 	for _, day := range weatherForecast.List {
 		date := time.Unix(int64(day.Dt), 0).Format("Monday 02 January 2006")
@@ -318,10 +316,10 @@ func PrintWeatherForecast(weatherForecast WeatherForecast, count int, detailed b
 		fmt.Fprintln(w, "Morning Temperature Feels like:\t", day.FeelsLike.Morn, printTemp(units))
 		fmt.Fprintln(w, "Evening Temperature:\t", day.Temp.Eve, printTemp(units))
 		fmt.Fprintln(w, "Evening Temperature Feels like:\t", day.FeelsLike.Eve, printTemp(units))
+		fmt.Fprintln(w, "Humidity:\t", day.Humidity, "%")
 		fmt.Fprintln(w, "Condition:\t", day.Weather[0].Description)
 
 		if detailed {
-			fmt.Fprintln(w, "Humidity:\t", day.Humidity, "%")
 			fmt.Fprintln(w, "Pressure :\t", day.Pressure, "hPa")
 			fmt.Fprintln(w, "Cloudiness\t", day.Clouds, "%")
 			fmt.Fprintln(w, "Rain\t", day.Rain, "mm")
