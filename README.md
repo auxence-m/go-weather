@@ -1,7 +1,7 @@
 ## This a whether cli app  made in golang
 
 The app name is go-weather. go-weather is a weather cli app in golang using the [spf13 cobra package](https://github.com/spf13/cobra)
-The app will print in the console the current weather data for a specific city of for a specific zip code
+The app will print in the console the current weather or the weather forecast (up to 16 days) for a specific city of for a specific zip code
 
 ## How to run
 
@@ -14,19 +14,22 @@ The app will print in the console the current weather data for a specific city o
 
 ## List of commands with examples
 
-### city command
-
+### current command
+#### Subcommands: city and zip
 ```
-go-weather city london 
-go-weather city london --country ca -units I --detailed
-go-weather city montreal -c ca -u S -d
+go-weather current city london 
+go-weather current city london --country ca -units I --detailed
+go-weather current zip j4b --country ca --units I --detailed
+go-weather current zip 75001 -c fr -u S -d
+go-weather current zip 94040
 ```
 
-### zip command
-
+### forecast command
+#### Subcommands: city and zip
 ```
-go-weather zip h1a -c ca 
-go-weather zip j4b --country ca --units I --detailed
-go-weather zip 75001 -c fr -u S -d
-go-weather zip 94040
+go-weather forecast zip h1a -c ca 
+go-weather forecast zip j4b --country ca --units I --detailed
+go-weather forecast city london 
+go-weather forecast city london --country ca -units I --detailed
+go-weather forecast zip 94040
 ```
