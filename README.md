@@ -12,7 +12,9 @@ git clone https://github.com/Auxence-M/go-weather.git
 ```
 - Change your directory to the project directory
 
-```cd go-weather```
+```
+cd go-weather
+```
 
 - Install dependencies
 
