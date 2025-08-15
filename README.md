@@ -8,7 +8,7 @@ The app can print in the console the current weather or the weather forecast (up
 
 - Clone the repository 
 ```
-git clone https://github.com/Auxence-M/go-weather.git
+git clone https://github.com/auxence-m/go-weather.git
 ```
 - Change your directory to the project directory
 
