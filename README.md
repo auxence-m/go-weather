@@ -73,7 +73,7 @@ go-weather current zip --help
 
 ```
 
-##### Flags:
+#### Flags:
 
 - `--country`: Specify the country code (e.g., `ca`, `fr`).
 - `--units`: Specify the unit system (e.g., `I` for imperial, `S` for scientific, `M` for metric).
@@ -106,7 +106,7 @@ go-weather forecast zip --help
 
 ```
 
-##### Flags:
+#### Flags:
 
 - `--country`: Specify the country code (e.g., `ca`, `fr`).
 - `--units`: Specify the unit system (e.g., `I` for imperial, `S` for scientific, `M` for metric).
