@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"go-weather/api"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 var count int
@@ -23,6 +24,7 @@ var forecastCityCmd = &cobra.Command{
 If a city name exist in multiple countries, the command will only get the weather forecast for the country the open weather api sets as default`,
 	Example: `go-weather forecast city london 
 go-weather forecast city london --country ca --units I --detailed
+go-weather forecast city madrid --count 4 --units S --detailed
 go-weather forecast city montreal -c ca -u S -d
 go-weather forecast city new-york --units I`,
 	Run: forecastCityRun,

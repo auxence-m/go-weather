@@ -56,6 +56,7 @@ go-weather current zip 94040
 go-weather forecast zip h1a -c ca 
 go-weather forecast zip j4b --country ca --units I --detailed
 go-weather forecast city london 
+go-weather forecast city madrid --count 5 --units S --detailed
 go-weather forecast city london --country ca -units I --detailed
 go-weather forecast zip 94040
 ```
