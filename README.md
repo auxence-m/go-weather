@@ -113,9 +113,9 @@ go-weather forecast zip --help
 - `--count`: Specify the number of days for the forecast (default is 7).
 - `--detailed` : Provides additional detailed weather information (optional).
 
-### Additional Notes
+## Additional Notes
 - Country Codes: Use ISO 3166-1 alpha-2 codes (e.g., `ca` for Canada, `gb` for the United Kingdom, `es` for Spain).
 - Units: `M` for metric (Celsius, meters, etc.), `I` for imperial (Fahrenheit, miles, etc.), `S` for scientific (Kelvin, meters, etc.).
 
-### License
+## License
 This project is licensed under the MIT License.
