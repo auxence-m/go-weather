@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/spf13/viper"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"text/tabwriter"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 var apiKey string
@@ -270,7 +271,7 @@ func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string
 	// Create a tabwriter instance.
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', 0)
 
-	fmt.Printf("Here is the current for %s, %s: \n", weatherData.Name, weatherData.Sys.Country)
+	fmt.Printf("Here is the current weather for %s, %s: \n", weatherData.Name, weatherData.Sys.Country)
 	fmt.Fprintln(w, "Temperature:\t", weatherData.Main.Temp, printTemp(units))
 	fmt.Fprintln(w, "Feels like:\t", weatherData.Main.FeelsLike, printTemp(units))
 	fmt.Fprintln(w, "Min Temperature:\t", weatherData.Main.TempMin, printTemp(units))
