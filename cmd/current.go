@@ -81,11 +81,7 @@ func init() {
 	rootCmd.AddCommand(currentCmd)
 	currentCmd.AddCommand(currentCityCmd, currentZipCmd)
 
-	currentCityCmd.Flags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
-	currentCityCmd.Flags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
-	currentCityCmd.Flags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
-
-	currentZipCmd.Flags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
-	currentZipCmd.Flags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
-	currentZipCmd.Flags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
+	currentCmd.PersistentFlags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
+	currentCmd.PersistentFlags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in, scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
+	currentCmd.PersistentFlags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
 }

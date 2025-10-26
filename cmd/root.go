@@ -10,7 +10,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "go-weather",
 	Short: "go-weather is a weather CLI app",
-	Long:  `The app will print in the console the current weather data for a specific city of for a specific zip code`,
+	Long:  `The app will print in the console the current weather data or the weather forecast (up to 16 days) for a specific city of for a specific zip code`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -23,11 +23,5 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

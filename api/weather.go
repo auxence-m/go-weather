@@ -91,9 +91,9 @@ type WeatherForecast struct {
 		Population int    `json:"population"`
 		Timezone   int    `json:"timezone"`
 	} `json:"city"`
-	Cod     string  `json:"cod"`
-	Message float64 `json:"message"`
-	Cnt     int     `json:"cnt"`
+	Cod     int    `json:"cod"`
+	Message string `json:"message"`
+	Cnt     int    `json:"cnt"`
 	List    []struct {
 		Dt      int `json:"dt"`
 		Sunrise int `json:"sunrise"`
@@ -265,7 +265,7 @@ func ForecastByZipCode(zipCode string, country string, count int, units string) 
 	return weatherForecast, nil
 }
 
-// PrintCurrentWeather Prints the current weather data onto the console
+// PrintCurrentWeather prints the current weather data onto the console
 func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string) {
 
 	// Create a tabwriter instance.
@@ -298,7 +298,7 @@ func PrintCurrentWeather(weatherData CurrentWeather, detailed bool, units string
 	}
 }
 
-// PrintWeatherForecast Prints the current weather data onto the console
+// PrintWeatherForecast prints the current weather data onto the console
 func PrintWeatherForecast(weatherForecast WeatherForecast, count int, detailed bool, units string) {
 
 	// Create a tabwriter instance.

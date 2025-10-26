@@ -58,7 +58,6 @@ go-weather current city london --country ca --units I --detailed
 For more details on the `current city` subcommand
 ``` 
 go-weather current city --help
-
 ```
 
 - **Zip Example:**
@@ -70,7 +69,6 @@ go-weather current zip 94040
 For more details on the `current zip` subcommand
 ``` 
 go-weather current zip --help
-
 ```
 
 #### Flags:

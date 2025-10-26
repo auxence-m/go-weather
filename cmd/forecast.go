@@ -34,7 +34,7 @@ var forecastZipCmd = &cobra.Command{
 	Use:   "zip [zip_code]",
 	Args:  cobra.ExactArgs(1),
 	Short: "Get the daily weather forecast for a specific zip code",
-	Long: `The zip command will display the  weather forecast for a specific zip code for the next 7 days,
+	Long: `The zip command will display the weather forecast for a specific zip code for the next 7 days,
 For canadian zip codes only the first three letters are necessary. 
 This command also require the use of the country flag for zip codes outside of the usa or else the search works for usa as default.
 The latter case could lead an error if the zip code does not exist in the usa`,
@@ -92,14 +92,8 @@ func init() {
 	rootCmd.AddCommand(forecastCmd)
 	forecastCmd.AddCommand(forecastCityCmd, forecastZipCmd)
 
-	forecastCityCmd.Flags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
-	forecastCityCmd.Flags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
-	forecastCityCmd.Flags().IntVarP(&count, "count", "n", 7, "The number of days of daily weather forecast for a city. Maximum of 16 and a minimum of 1")
-	forecastCityCmd.Flags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
-
-	forecastZipCmd.Flags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
-	forecastZipCmd.Flags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
-	forecastZipCmd.Flags().IntVarP(&count, "count", "n", 7, "The number of days of daily weather forecast for a zip code. Maximum of 16 and a minimum of 1")
-	forecastZipCmd.Flags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
-
+	forecastCmd.PersistentFlags().StringVarP(&country, "country", "c", "", "The country where the city is located. Only the country code is required. Example: ca for Canada or fr for France")
+	forecastCmd.PersistentFlags().StringVarP(&units, "units", "u", "M", "Units you want weather data displayed in scientific S(Kelvin, m/s), metrics M(Celsius, m/s) or imperial I(Fahrenheit, mph).")
+	forecastCmd.PersistentFlags().IntVarP(&count, "count", "n", 7, "The number of days of daily weather forecast for a city. Maximum of 16 and a minimum of 1")
+	forecastCmd.PersistentFlags().BoolVarP(&detailed, "detailed", "d", false, "Display a more detailed version of the weather data")
 }
